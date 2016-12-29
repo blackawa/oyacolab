@@ -1,6 +1,6 @@
 # oyacolab
 
-FIXME: description
+media service with clj / cljs
 
 ## Developing
 
