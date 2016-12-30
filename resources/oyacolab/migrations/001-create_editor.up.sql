@@ -5,10 +5,8 @@ create table editor_status (
 --;;
 create table editor (
   id serial primary key,
-  name varchar(128) not null,
-  user_id varchar(32) not null,
-  salt varchar(12) not null,
-  password varchar(64) not null,
+  username varchar(32) not null,
+  password varchar(98) not null,
   editor_status_id integer not null,
   foreign key (editor_status_id) references editor_status (id)
 );

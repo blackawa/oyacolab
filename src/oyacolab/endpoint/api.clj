@@ -1,16 +1,9 @@
 (ns oyacolab.endpoint.api
   (:require [compojure.core :refer :all]
-            [liberator.core :refer [defresource]]
-            [liberator.representation :refer [ring-response]]
-            [oyacolab.resource.authentication :refer [authentication]]))
+            [oyacolab.resource.authentication :refer [authentication]]
+            [oyacolab.resource.editor :refer [editor]]))
 
-(defresource editor []
-  :allowed-methods [:post]
-  :available-media-types ["application/edn"]
-  :post! (fn [ctx] ctx)
-  :handle-ok (fn [ctx] ctx))
-
-(defn endpoint [{:keys [db]}]
+(defn endpoint [{{db :spec} :db}]
   (context "/api" _
-           (ANY "/editor" _ (editor))
+           (ANY "/editor" _ (editor db))
            (ANY "/authentication" _ (authentication))))
