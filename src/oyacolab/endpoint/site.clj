@@ -16,5 +16,7 @@
 (defn endpoint [{{db :spec} :db}]
   (routes
    (GET "/" [] (index))
-   (GET "/article/:id" [] (index))
-   (GET "/login" [] (index))))
+   (GET "/articles/:id" [] (index))
+   (GET "/admin/login" [] (index))
+   (GET "/admin/articles" [] (index))
+   (GET "/admin/articles/:id" [] (index))))

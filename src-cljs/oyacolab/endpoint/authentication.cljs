@@ -1,6 +1,8 @@
 (ns oyacolab.endpoint.authentication
   (:require [cljs.reader :refer [read-string]]
-            [oyacolab.endpoint.api :refer [request]]))
+            [re-frame.core :refer [dispatch]]
+            [oyacolab.endpoint.api :refer [request]]
+            [secretary.core :as secretary]))
 
 (defn- set-cookie [k v]
   (println (str k "=" v ";path=/"))
@@ -10,7 +12,10 @@
   (request (str "http://" (.. js/location -host) "/api/authentication")
            :post
            (fn [res]
-             ;; TODO: set token as cookie
-             (set-cookie "token" (:token res)))
+             (set-cookie "token" (:token res))
+             (secretary/dispatch! "/admin/articles"))
+           :error-handler
+           (fn [_ xhrio]
+             (dispatch [:error (read-string (.getResponseText xhrio))]))
            :body (str body)
            :headers {"Content-Type" "application/edn"}))

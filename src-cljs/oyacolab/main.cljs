@@ -14,7 +14,7 @@
                   (js/document.getElementById "app")))
 
 (defn ^:export init []
-  (dispatch-sync [:init-app-db])
+  (dispatch-sync [:init])
   (accountant/configure-navigation!
    {:nav-handler (fn [path] (secretary/dispatch! path))
     :path-exists? (fn [path] (secretary/locate-route path))})

@@ -2,13 +2,15 @@
   (:require [re-frame.core :refer [reg-event-fx reg-event-db]]))
 
 (reg-event-fx
- :init-app-db
+ :init
  (fn [_ _] {}))
 
 (reg-event-db
  :init-login-db
  (fn [db _]
-   (assoc db :form {})))
+   (-> db
+       (assoc :form {})
+       (assoc :error {}))))
 
 (reg-event-db
  :route
@@ -16,11 +18,16 @@
    (assoc db :route route)))
 
 (reg-event-db
- :login.form.id
- (fn [db [_ id]]
-   (assoc-in db [:form :id] id)))
+ :login.form.username
+ (fn [db [_ username]]
+   (assoc-in db [:form :username] username)))
 
 (reg-event-db
- :login.form.pw
- (fn [db [_ pw]]
-   (assoc-in db [:form :pw] pw)))
+ :login.form.password
+ (fn [db [_ password]]
+   (assoc-in db [:form :password] password)))
+
+(reg-event-db
+ :error
+ (fn [db [_ error]]
+   (assoc db :error error)))

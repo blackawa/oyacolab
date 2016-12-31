@@ -8,6 +8,6 @@
       [:div
        [:h3 "this is top page!"]
        [:ul
-        [:li [:a {:href "/article/1"} "article 1"]]
-        [:li [:a {:href "/article/2"} "article 2"]]
-        [:li [:a {:href "/article/3"} "article 3"]]]])}))
+        [:li [:a {:href "/articles/1"} "article 1"]]
+        [:li [:a {:href "/articles/2"} "article 2"]]
+        [:li [:a {:href "/articles/3"} "article 3"]]]])}))

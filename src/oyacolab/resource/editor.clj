@@ -11,8 +11,7 @@
                    (assoc :editor_status_id 1))]
     (println entity)
     (println db)
-    (editor/create-editor! entity {:connection db})
-    ))
+    (editor/create-editor! entity {:connection db})))
 
 (defresource editor [db]
   :allowed-methods [:post]

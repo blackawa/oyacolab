@@ -5,15 +5,17 @@
             [oyacolab.component.index :as index]
             [oyacolab.component.article :as article]
             [oyacolab.component.not-found :as not-found]
-            [oyacolab.component.login :as login]))
+            [oyacolab.component.admin.login :as login]))
 
 ;; url ===> route ============================
 (defroute "/" []
   (dispatch [:route [:customer :index]]))
-(defroute "/article/:id" [id]
+(defroute "/articles/:id" [id]
   (dispatch [:route [:customer :article id]]))
-(defroute "/login" []
-  (dispatch [:route [:admin :login]]))
+(defroute "/admin/login" []
+  (dispatch [:route [:admin :admin.login]]))
+(defroute "/admin/articles" []
+  (dispatch [:route [:admin :admin.articles]]))
 
 ;; route ===> view ===========================
 ;; inner-view ================================
@@ -22,10 +24,13 @@
   [index/index])
 (defmethod current-view :article []
   [article/article])
-(defmethod current-view :login []
+(defmethod current-view :admin.login []
   [login/login])
+(defmethod current-view :admin.articles []
+  (fn [] [:div "articles"]))
 (defmethod current-view :default []
   [not-found/not-found])
+
 ;; base-view =================================
 (defn- customer []
   (reagent/create-class
@@ -34,8 +39,7 @@
       (fn []
         [:div.wrap
          [:header
-          [:h2 "親子開発日記 | oya-co-lab"]
-          [:p (str "route: " @route)]]
+          [:h2 "親子開発日記 | oya-co-lab"]]
          [:section
           [current-view @route]]]))}))
 (defn- admin []
@@ -54,4 +58,4 @@
 (defmethod current-base-view :admin []
   [admin])
 (defmethod current-base-view :default []
-  [customer])
+  [(fn [] [:div])])

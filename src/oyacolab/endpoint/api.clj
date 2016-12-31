@@ -6,4 +6,4 @@
 (defn endpoint [{{db :spec} :db}]
   (context "/api" _
            (ANY "/editor" _ (editor db))
-           (ANY "/authentication" _ (authentication))))
+           (ANY "/authentication" _ (authentication db))))
