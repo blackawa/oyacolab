@@ -20,6 +20,7 @@
                  [duct/ragtime-component "0.1.4"]
                  [liberator "0.13"]
                  [yesql "0.5.3"]
+                 [clj-time "0.13.0"]
                  [hiccup "1.0.5"]
                  [buddy "1.2.0"]
                  [re-frame "0.9.1"]

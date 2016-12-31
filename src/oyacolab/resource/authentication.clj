@@ -1,6 +1,8 @@
 (ns oyacolab.resource.authentication
   (:require [buddy.hashers :as h]
             [clojure.tools.logging :as log]
+            [clj-time.core :as time]
+            [clj-time.jdbc]
             [liberator.core :refer [defresource]]
             [liberator.representation :refer [ring-response]]
             [oyacolab.repository.auth-token :as token]
@@ -38,7 +40,8 @@
   (let [editor-id (-> ctx ::editor :id)
         token (str (java.util.UUID/randomUUID))]
     ;; TODO: use JWT
-    (token/create-auth-token! {:editor_id editor-id :token token} {:connection db})
+    (token/create-auth-token! {:editor_id editor-id :token token :expire (time/plus (time/now) (time/days 30))}
+                              {:connection db})
     {::token token}))
 
 (defn- handle-created [{token ::token}]

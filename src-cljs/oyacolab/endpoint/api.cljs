@@ -16,4 +16,4 @@
            url
            (.toLowerCase (name method))
            body
-           (clj->js {"Content-Type" "application/edn;charset=utf-8"}))))
+           (clj->js (merge {} headers)))))
