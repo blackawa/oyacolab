@@ -36,9 +36,6 @@
 (defn- conflict? [ctx]
   (let [id (-> ctx ::params :id)
         data (::data ctx)]
-    (println "data:" data)
-    (println "id:" id ", id from data:" (:id data))
-    (println "(= (str id) (str (:id data)))" (= (str id) (str (:id data))))
     (if (= (str id) (str (:id data)))
       false
       [true {::error "invalid request"}])))
@@ -68,7 +65,6 @@
 
 (defn- put! [ctx db]
   (let [data (::data ctx)
-        _ (println "got data:" data)
         article-status-id (article-status-id (:save-type data))
         editor-id (::editor-id ctx)]
     (-> ctx

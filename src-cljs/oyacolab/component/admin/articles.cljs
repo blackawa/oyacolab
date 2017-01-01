@@ -3,8 +3,8 @@
             [reagent.core :as reagent]
             [re-frame.core :refer [dispatch subscribe]]
             [markdown.core :refer [md->html]]
-            [oyacolab.endpoint.article :as article]
-            [oyacolab.endpoint.auth-token :as auth-token]))
+            [oyacolab.endpoint.admin.article :as article]
+            [oyacolab.endpoint.admin.auth-token :as auth-token]))
 
 (defn articles []
   (reagent/create-class

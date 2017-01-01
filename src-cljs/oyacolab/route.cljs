@@ -2,8 +2,8 @@
   (:require [secretary.core :refer-macros [defroute]]
             [re-frame.core :refer [dispatch subscribe]]
             [reagent.core :as reagent]
-            [oyacolab.component.index :as index]
-            [oyacolab.component.article :as article]
+            [oyacolab.component.customer.index :as index]
+            [oyacolab.component.customer.articles :as customer-articles]
             [oyacolab.component.not-found :as not-found]
             [oyacolab.component.admin.login :as admin-login]
             [oyacolab.component.admin.articles :as admin-articles]))
@@ -28,7 +28,7 @@
 (defmethod current-view :index []
   [index/index])
 (defmethod current-view :article []
-  [article/article])
+  [customer-articles/article])
 (defmethod current-view :admin.login []
   [admin-login/login])
 (defmethod current-view :admin.articles []

@@ -1,4 +1,4 @@
-(ns oyacolab.resource.authentication
+(ns oyacolab.resource.admin.authentication
   (:require [buddy.hashers :as h]
             [clojure.tools.logging :as log]
             [clj-time.core :as time]

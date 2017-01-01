@@ -2,8 +2,8 @@
   (:require [accountant.core :as accountant]
             [reagent.core :as reagent]
             [re-frame.core :refer [dispatch subscribe]]
-            [oyacolab.endpoint.authentication :refer [authenticate!]]
-            [oyacolab.endpoint.auth-token :as auth-token]))
+            [oyacolab.endpoint.admin.authentication :refer [authenticate!]]
+            [oyacolab.endpoint.admin.auth-token :as auth-token]))
 
 (defn login []
   (reagent/create-class

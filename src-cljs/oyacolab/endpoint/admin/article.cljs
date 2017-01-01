@@ -1,4 +1,4 @@
-(ns oyacolab.endpoint.article
+(ns oyacolab.endpoint.admin.article
   (:require [accountant.core :as accountant]
             [cljs.reader :refer [read-string]]
             [re-frame.core :refer [dispatch]]
@@ -52,8 +52,7 @@
     (request (str (.. js/location -procotol) "//" (.. js/location -host) "/api/admin/articles/" (:id form))
              :put
              (fn [xhrio]
-               ;; TODO: display success message
-               )
+               (accountant/navigate! "/admin/articles"))
              :error-handler
              (fn [e xhrio]
                (condp = (.getStatus xhrio)

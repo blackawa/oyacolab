@@ -1,4 +1,4 @@
-(ns oyacolab.endpoint.auth-token
+(ns oyacolab.endpoint.admin.auth-token
   (:require [accountant.core :as accountant]
             [cljs.reader :refer [read-string]]
             [re-frame.core :refer [dispatch]]
@@ -7,7 +7,7 @@
 
 (defn check [& {:keys [success-handler]}]
   (if-let [auth-token (get-cookie :token)]
-    (request (str (.. js/location -procotol) "//" (.. js/location -host) "/api/auth-token")
+    (request (str (.. js/location -procotol) "//" (.. js/location -host) "/api/admin/auth-token")
              :get
              (if success-handler success-handler #())
              :error-handler
@@ -15,4 +15,5 @@
                (when (= 401 (.getStatus xhrio))
                  (accountant/navigate! "/admin/login")))
              :headers {"Content-Type" "application/edn"
-                       "Authorization" (str "Bearer " auth-token)})))
+                       "Authorization" (str "Bearer " auth-token)})
+    (accountant/navigate! "/admin/login")))

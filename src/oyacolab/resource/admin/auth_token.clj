@@ -1,4 +1,4 @@
-(ns oyacolab.resource.auth-token
+(ns oyacolab.resource.admin.auth-token
   (:require [clj-time.core :as time]
             [clj-time.jdbc]
             [clojure.tools.logging :as log]

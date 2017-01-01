@@ -32,3 +32,11 @@
 (reg-sub
  :admin.articles.edit.error
  (fn [db _] (:error db)))
+
+(reg-sub
+ :customer.article
+ (fn [db _] (:data db)))
+
+(reg-sub
+ :customer.articles
+ (fn [db _] (:data db)))

@@ -79,3 +79,29 @@
  :admin.articles.edit.error
  (fn [db [_ error]]
    (assoc db :error error)))
+
+(reg-event-db
+ :init-customer-article-db
+ (fn [db _]
+   (-> db
+       (assoc :data {})
+       (assoc :form {})
+       (assoc :error {}))))
+
+(reg-event-db
+ :customer.article
+ (fn [db [_ article]]
+   (assoc db :data article)))
+
+(reg-event-db
+ :init-customer-articles-db
+ (fn [db _]
+   (-> db
+       (assoc :data {})
+       (assoc :form {})
+       (assoc :error {}))))
+
+(reg-event-db
+ :customer.articles
+ (fn [db [_ articles]]
+   (assoc db :data articles)))

@@ -9,12 +9,9 @@
                    read-string
                    (update :password h/encrypt)
                    (assoc :editor_status_id 1))]
-    (println entity)
-    (println db)
     (editor/create-editor! entity {:connection db})))
 
 (defresource editor [db]
   :allowed-methods [:post]
   :available-media-types ["application/edn"]
-  :post! (fn [ctx] (post! ctx db))
-  :handle-ok (fn [ctx] ctx))
+  :post! (fn [ctx] (post! ctx db)))
