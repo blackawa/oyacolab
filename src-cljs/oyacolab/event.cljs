@@ -62,3 +62,20 @@
  :admin.articles.new.save-type
  (fn [db [_ save-type]]
    (assoc-in db [:form :save-type] save-type)))
+
+(reg-event-db
+ :init-edit-article-db
+ (fn [db _]
+   (-> db
+       (assoc :form {})
+       (assoc :error {}))))
+
+(reg-event-db
+ :admin.article
+ (fn [db [_ article]]
+   (assoc db :form article)))
+
+(reg-event-db
+ :admin.articles.edit.error
+ (fn [db [_ error]]
+   (assoc db :error error)))

@@ -8,17 +8,20 @@
             [oyacolab.repository.auth-token :as token]
             [oyacolab.repository.editor :as editor]))
 
+;; TODO: 各フェーズの関数をバラして、 [false {::hoge fuga}]を返すようにする.
+;; それを必要な分だけ繰り返せばmalformed?が分かるようにしてDRYにしたい.
+;; malformed?などを共通関数に切り出すと、 ::data などが次の関数に渡せなくなる.
 (defn- malformed? "認証トークンと(post / putなら)リクエストボディのパースを行う." [ctx]
-  (let [authorization (-> ctx (get-in [:request :headers]) (get "authorization"))
-        auth-token (second (clojure.string/split authorization #"\s"))
-        body (when (#{:post} (get-in ctx [:request :request-method])) (-> ctx (get-in [:request :body]) slurp))]
+  (let [auth-token (second (clojure.string/split (-> ctx (get-in [:request :headers]) (get "authorization")) #"\s"))
+        params (-> ctx (get-in [:request :params]))
+        body (when (#{:put} (get-in ctx [:request :request-method])) (-> ctx (get-in [:request :body]) slurp))]
     (if auth-token
       (if body
         (try
-          [false {::auth-token auth-token ::data (read-string body)}]
+          [false {::auth-token auth-token ::data (read-string body) ::params params}]
           (catch RuntimeException e
             [true {::error "invalid body"}]))
-        [false {::auth-token auth-token}])
+        [false {::auth-token auth-token ::params params}])
       [true {::error "invalid auth token"}])))
 
 (defn- handle-malformed [ctx]
@@ -30,8 +33,32 @@
     (when (time/before? (time/now) (:expire auth-token))
       [true {::editor-id (:editor_id auth-token)}])))
 
+(defn- conflict? [ctx]
+  (let [id (-> ctx ::params :id)
+        data (::data ctx)]
+    (println "data:" data)
+    (println "id:" id ", id from data:" (:id data))
+    (println "(= (str id) (str (:id data)))" (= (str id) (str (:id data))))
+    (if (= (str id) (str (:id data)))
+      false
+      [true {::error "invalid request"}])))
+
+(defn- handle-conflict [ctx]
+  (let [error (::error ctx)]
+    (str {:error error})))
+
+(defn- save-type [article-status-id]
+  (condp = article-status-id
+    1 :draft
+    2 :published
+    3 :withdrawn))
+
 (defn- handle-ok [ctx db]
-  (article/find-all {} {:connection db}))
+  (let [id (-> ctx ::params :id)
+        article (first (article/find-by-id {:id (read-string id)} {:connection db}))]
+    (-> article
+        (assoc :save-type (save-type (:article_status_id article)))
+        (dissoc :article_status_id))))
 
 (defn- article-status-id [save-type]
   (condp = save-type
@@ -39,28 +66,25 @@
     :published 2
     :withdrawn 3))
 
-(defn- post! [ctx db]
+(defn- put! [ctx db]
   (let [data (::data ctx)
+        _ (println "got data:" data)
         article-status-id (article-status-id (:save-type data))
-        editor-id (::editor-id ctx)
-        new-article (-> ctx
-                       ::data
-                       (assoc :article_status_id article-status-id)
-                       (dissoc :save-type)
-                       (assoc :editor_id editor-id)
-                       (article/create-article<! {:connection db}))]
-    {::id (:id new-article)}))
+        editor-id (::editor-id ctx)]
+    (-> ctx
+        ::data
+        (assoc :article_status_id article-status-id)
+        (dissoc :save-type)
+        (assoc :editor_id editor-id)
+        (article/update-article! {:connection db}))))
 
-(defn- location [ctx]
-  (if-let [id (::id ctx)]
-    (format "/admin/articles/%s" id)))
-
-(defresource articles [db]
-  :allowed-methods [:get :post]
+(defresource article [db]
+  :allowed-methods [:get :put]
   :available-media-types ["application/edn"]
   :malformed? malformed?
   :handle-malformed handle-malformed
   :authorized? (fn [ctx] (authorized? ctx db))
+  :conflict? conflict?
+  :handle-conflict handle-conflict
   :handle-ok (fn [ctx] (handle-ok ctx db))
-  :post! (fn [ctx] (post! ctx db))
-  :location location)
+  :put! (fn [ctx] (put! ctx db)))

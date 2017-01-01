@@ -75,10 +75,43 @@
 (defn article []
   (reagent/create-class
    {:component-will-mount
-    (fn [] (auth-token/check))
+    (fn []
+      (let [[_ _ id] @(subscribe [:route])]
+        (auth-token/check)
+        (dispatch [:init-edit-article-db])
+        (article/fetch-by-id id)))
     :reagent-render
     (fn []
-      (let [route (subscribe [:route])
-            [_ _ id] @route]
+      (let [form (subscribe [:admin.article.edit.form])
+            error (subscribe [:admin.articles.edit.error])]
         [:div
-         [:h3 (str "article" id)]]))}))
+         [:h3 "new article"]
+         [:p.error @error]
+         [:form
+          [:p.title
+           [:label {:for "title"} "title"]
+           [:input {:type "text"
+                    :id "title"
+                    :name "title"
+                    :placeholder "title"
+                    :value (:title @form)
+                    :on-change #(dispatch [:admin.articles.new.title (-> % .-target .-value)])}]]
+          [:p.content
+           [:label {:for "content"} "content"]
+           [:textarea {:id "content"
+                       :name "content"
+                       :placeholder "content"
+                       :value (:content @form)
+                       :on-change #(dispatch [:admin.articles.new.content (-> % .-target .-value)])}]]
+          [:div.content-preview
+           [:label "content-preview"]
+           [:div {:dangerouslySetInnerHTML {:__html (md->html (:content @form))}}]]
+          [:p.save-type
+           [:label {:for "save-type"} "save-type"]
+           [:select
+            {;; use (or) to suppress error to use nil for value of <select>
+             :value (or (:save-type @form) "")
+             :on-change #(dispatch [:admin.articles.new.save-type (keyword (-> % .-target .-value))])}
+            [:option {:value :draft} "draft"]
+            [:option {:value :published} "published"]]]
+          [:p [:button {:on-click #(do (.preventDefault %) (article/put @form))} "save"]]]]))}))

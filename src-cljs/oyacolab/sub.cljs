@@ -24,3 +24,11 @@
 (reg-sub
  :admin.articles.new.error
  (fn [db _] (:error db)))
+
+(reg-sub
+ :admin.article.edit.form
+ (fn [db _] (:form db)))
+
+(reg-sub
+ :admin.articles.edit.error
+ (fn [db _] (:error db)))
