@@ -5,7 +5,8 @@
             [oyacolab.component.index :as index]
             [oyacolab.component.article :as article]
             [oyacolab.component.not-found :as not-found]
-            [oyacolab.component.admin.login :as login]))
+            [oyacolab.component.admin.login :as admin-login]
+            [oyacolab.component.admin.articles :as admin-articles]))
 
 ;; url ===> route ============================
 (defroute "/" []
@@ -16,6 +17,8 @@
   (dispatch [:route [:admin :admin.login]]))
 (defroute "/admin/articles" []
   (dispatch [:route [:admin :admin.articles]]))
+(defroute "/admin/articles/:id" [id]
+  (dispatch [:route [:admin :admin.article id]]))
 
 ;; route ===> view ===========================
 ;; inner-view ================================
@@ -25,9 +28,11 @@
 (defmethod current-view :article []
   [article/article])
 (defmethod current-view :admin.login []
-  [login/login])
+  [admin-login/login])
 (defmethod current-view :admin.articles []
-  (fn [] [:div "articles"]))
+  [admin-articles/articles])
+(defmethod current-view :admin.article []
+  [admin-articles/article])
 (defmethod current-view :default []
   [not-found/not-found])
 

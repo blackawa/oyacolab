@@ -3,7 +3,11 @@
 
 (reg-event-fx
  :init
- (fn [_ _] {}))
+ (fn [_ _]
+   ;; === Schema Definition ==================================
+   ;; {:form {} :error {} :route {} :data {}}
+   ;; ========================================================
+   {}))
 
 (reg-event-db
  :init-login-db
@@ -31,3 +35,8 @@
  :error
  (fn [db [_ error]]
    (assoc db :error error)))
+
+(reg-event-db
+ :admin.articles
+ (fn [db [_ articles]]
+   (assoc db :data articles)))

@@ -1,15 +1,16 @@
-(ns oyacolab.endpoint.auth-token
+(ns oyacolab.endpoint.article
   (:require [accountant.core :as accountant]
             [cljs.reader :refer [read-string]]
             [re-frame.core :refer [dispatch]]
             [oyacolab.endpoint.api :refer [request]]
             [oyacolab.util.cookie :refer [get-cookie]]))
 
-(defn check [& {:keys [success-handler]}]
+(defn fetch-all []
   (if-let [auth-token (get-cookie :token)]
-    (request (str "http://" (.. js/location -host) "/api/auth-token")
+    (request (str "http://" (.. js/location -host) "/api/admin/articles")
              :get
-             (if success-handler success-handler #())
+             (fn [res]
+               (dispatch [:admin.articles res]))
              :error-handler
              (fn [e xhrio]
                (when (= "401" (.getStatus xhrio))

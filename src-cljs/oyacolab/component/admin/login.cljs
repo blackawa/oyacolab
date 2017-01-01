@@ -1,14 +1,15 @@
 (ns oyacolab.component.admin.login
-  (:require [reagent.core :as reagent]
+  (:require [accountant.core :as accountant]
+            [reagent.core :as reagent]
             [re-frame.core :refer [dispatch subscribe]]
             [oyacolab.endpoint.authentication :refer [authenticate!]]
-            [oyacolab.endpoint.auth-token :refer [check-auth-token]]))
+            [oyacolab.endpoint.auth-token :as auth-token]))
 
 (defn login []
   (reagent/create-class
    {:component-will-mount
     (fn []
-      (check-auth-token)
+      (auth-token/check :success-handler (fn [res] (accountant/navigate! "/admin/articles")))
       (dispatch [:init-login-db]))
     :reagent-render
     (fn []

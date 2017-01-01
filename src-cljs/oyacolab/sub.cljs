@@ -14,5 +14,5 @@
  (fn [db _ ] (:error db)))
 
 (reg-sub
- :debug
- (fn [db _] db))
+ :admin.articles
+ (fn [db _] (:data db)))
