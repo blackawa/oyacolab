@@ -8,7 +8,7 @@
 
 (defn fetch-all []
   (let [auth-token (get-cookie :token)]
-    (request (str "http://" (.. js/location -host) "/api/admin/articles")
+    (request (str (.. js/location -procotol) "//" (.. js/location -host) "/api/admin/articles")
              :get
              (fn [xhrio]
                (dispatch [:admin.articles (read-string (.getResponseText xhrio))]))
@@ -21,7 +21,7 @@
 
 (defn save [form]
   (let [auth-token (get-cookie :token)]
-    (request (str "http://" (.. js/location -host) "/api/admin/articles")
+    (request (str (.. js/location -procotol) "//" (.. js/location -host) "/api/admin/articles")
              :post
              (fn [xhrio]
                ;; TODO: get location from response header

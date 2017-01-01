@@ -7,7 +7,7 @@
 
 (defn check [& {:keys [success-handler]}]
   (if-let [auth-token (get-cookie :token)]
-    (request (str "http://" (.. js/location -host) "/api/auth-token")
+    (request (str (.. js/location -procotol) "//" (.. js/location -host) "/api/auth-token")
              :get
              (if success-handler success-handler #())
              :error-handler

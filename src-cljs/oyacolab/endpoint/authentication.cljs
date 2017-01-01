@@ -6,7 +6,7 @@
             [oyacolab.util.cookie :refer [set-cookie!]]))
 
 (defn authenticate! [body]
-  (request (str "http://" (.. js/location -host) "/api/authentication")
+  (request (str (.. js/location -procotol) "//" (.. js/location -host) "/api/authentication")
            :post
            (fn [xhrio]
              (set-cookie! :token (:token (read-string (.getResponseText xhrio))))
