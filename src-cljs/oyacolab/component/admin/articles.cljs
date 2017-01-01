@@ -17,7 +17,7 @@
         [:div
          [:h3 "articles"]
          [:a {:href "/admin/articles/new"} "create new article"]
-         [:table
+         [:table.pure-table
           [:thead
            [:tr [:th "id"] [:th "title"] [:th "status"]]]
           [:tbody
