@@ -17,6 +17,8 @@
   (dispatch [:route [:admin :admin.login]]))
 (defroute "/admin/articles" []
   (dispatch [:route [:admin :admin.articles]]))
+(defroute "/admin/articles/new" []
+  (dispatch [:route [:admin :admin.articles.new]]))
 (defroute "/admin/articles/:id" [id]
   (dispatch [:route [:admin :admin.article id]]))
 
@@ -31,6 +33,8 @@
   [admin-login/login])
 (defmethod current-view :admin.articles []
   [admin-articles/articles])
+(defmethod current-view :admin.articles.new []
+  [admin-articles/new-article])
 (defmethod current-view :admin.article []
   [admin-articles/article])
 (defmethod current-view :default []

@@ -19,18 +19,59 @@
          [:a {:href "/admin/articles/new"} "create new article"]
          [:table
           [:thead
-           [:tr
-            [:th "id"]
-            [:th "title"]
-            [:th "status"]]]
+           [:tr [:th "id"] [:th "title"] [:th "status"]]]
           [:tbody
            (map
             (fn [a]
               [:tr
                [:td (:id a)]
-               [:td [:a {:href (string/format "/admin/articles/%s" (:title a))} (:title a)]]
+               [:td [:a {:href (str "/admin/articles/" (:id a))} (:title a)]]
                [:td (:article_status_id a)]])
             @articles)]]]))}))
+
+(defn new-article []
+  (reagent/create-class
+   {:component-will-mount
+    (fn []
+      (auth-token/check)
+      (dispatch [:init-new-article-db]))
+    :reagent-render
+    (fn []
+      (let [form (subscribe [:admin.articles.new.form])
+            error (subscribe [:admin.articles.new.error])]
+        [:div
+         [:h3 "new article"]
+         [:p (str "debug. route: " @(subscribe [:route]))]
+         [:p (str "debug. form: " @form)]
+         [:p.error @error]
+         [:form
+          [:p.title
+           [:label {:for "title"} "title"]
+           [:input {:type "text"
+                    :id "title"
+                    :name "title"
+                    :placeholder "title"
+                    :value (:title @form)
+                    :on-change #(dispatch [:admin.articles.new.title (-> % .-target .-value)])}]]
+          [:p.content
+           [:label {:for "content"} "content"]
+           [:textarea {:id "content"
+                       :name "content"
+                       :placeholder "content"
+                       :value (:content @form)
+                       :on-change #(dispatch [:admin.articles.new.content (-> % .-target .-value)])}]]
+          [:div.content-preview
+           [:label "content-preview"]
+           [:p (:content @form)]]
+          [:p.save-type
+           [:label {:for "save-type"} "save-type"]
+           [:select
+            {;; user (or) to suppress error to use nil for value of <select>
+             :value (or (:save-type @form) "")
+             :on-change #(dispatch [:admin.articles.new.save-type (keyword (-> % .-target .-value))])}
+            [:option {:value :draft} "draft"]
+            [:option {:value :published} "published"]]]
+          [:p [:button {:on-click #(do (.preventDefault %) (article/save @form))} "save"]]]]))}))
 
 (defn article []
   (reagent/create-class
@@ -38,7 +79,7 @@
     (fn [] (auth-token/check))
     :reagent-render
     (fn []
-      (let [[_ _ id] @(subscribe [:route])]
+      (let [route (subscribe [:route])
+            [_ _ id] @route]
         [:div
-         [:h3 (str "article" id)]
-         [:a {:href "/admin/articles/2"} "go to /admin/articles/2"]]))}))
+         [:h3 (str "article" id)]]))}))

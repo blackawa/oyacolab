@@ -19,4 +19,5 @@
    (GET "/articles/:id" [] (index))
    (GET "/admin/login" [] (index))
    (GET "/admin/articles" [] (index))
+   (GET "/admin/articles/new" [] (index))
    (GET "/admin/articles/:id" [] (index))))

@@ -1,6 +1,10 @@
+delete from editor;
+--;;
 delete from editor_status;
 --;;
 select setval ('editor_status_id_seq', 1, false);
+--;;
+delete from article;
 --;;
 delete from article_status;
 --;;

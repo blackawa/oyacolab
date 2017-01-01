@@ -9,7 +9,7 @@
   (reagent/create-class
    {:component-will-mount
     (fn []
-      (auth-token/check :success-handler (fn [res] (accountant/navigate! "/admin/articles")))
+      (auth-token/check :success-handler (fn [_] (accountant/navigate! "/admin/articles")))
       (dispatch [:init-login-db]))
     :reagent-render
     (fn []

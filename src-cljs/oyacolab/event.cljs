@@ -40,3 +40,25 @@
  :admin.articles
  (fn [db [_ articles]]
    (assoc db :data articles)))
+
+(reg-event-db
+ :init-new-article-db
+ (fn [db _]
+   (-> db
+       (assoc :form {:save-type :draft})
+       (assoc :error {}))))
+
+(reg-event-db
+ :admin.articles.new.title
+ (fn [db [_ title]]
+   (assoc-in db [:form :title] title)))
+
+(reg-event-db
+ :admin.articles.new.content
+ (fn [db [_ content]]
+   (assoc-in db [:form :content] content)))
+
+(reg-event-db
+ :admin.articles.new.save-type
+ (fn [db [_ save-type]]
+   (assoc-in db [:form :save-type] save-type)))

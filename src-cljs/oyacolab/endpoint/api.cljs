@@ -9,7 +9,7 @@
   (let [xhrio (net/xhr-connection)]
     (events/listen xhrio EventType.SUCCESS
                    (fn [e]
-                     (handler (read-string (.getResponseText xhrio)))))
+                     (handler xhrio)))
     (events/listen xhrio EventType.ERROR
                    (fn [e] (if (nil? error-handler) nil (error-handler e xhrio))))
     (.send xhrio

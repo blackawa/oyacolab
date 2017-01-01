@@ -10,5 +10,7 @@ create table article (
   thumbnail_small text,
   thumbnail_large text,
   article_status_id integer not null,
-  foreign key (article_status_id) references article_status (id)
+  editor_id integer not null,
+  foreign key (article_status_id) references article_status (id),
+  foreign key (editor_id) references editor (id)
 );

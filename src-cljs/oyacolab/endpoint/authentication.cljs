@@ -8,8 +8,8 @@
 (defn authenticate! [body]
   (request (str "http://" (.. js/location -host) "/api/authentication")
            :post
-           (fn [res]
-             (set-cookie! :token (:token res))
+           (fn [xhrio]
+             (set-cookie! :token (:token (read-string (.getResponseText xhrio))))
              (accountant/navigate! "/admin/articles"))
            :error-handler
            (fn [_ xhrio]

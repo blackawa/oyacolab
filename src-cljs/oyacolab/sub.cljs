@@ -11,8 +11,16 @@
 
 (reg-sub
  :error
- (fn [db _ ] (:error db)))
+ (fn [db _] (:error db)))
 
 (reg-sub
  :admin.articles
  (fn [db _] (:data db)))
+
+(reg-sub
+ :admin.articles.new.form
+ (fn [db _] (:form db)))
+
+(reg-sub
+ :admin.articles.new.error
+ (fn [db _] (:error db)))
