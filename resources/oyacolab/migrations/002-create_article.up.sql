@@ -9,6 +9,7 @@ create table article (
   content text not null,
   thumbnail_small text,
   thumbnail_large text,
+  published_date date,
   article_status_id integer not null,
   editor_id integer not null,
   foreign key (article_status_id) references article_status (id),

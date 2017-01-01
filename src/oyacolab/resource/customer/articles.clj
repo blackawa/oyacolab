@@ -1,9 +1,12 @@
 (ns oyacolab.resource.customer.articles
-  (:require [liberator.core :refer [defresource]]
+  (:require [clj-time.jdbc]
+            [clj-time.format :as format]
+            [liberator.core :refer [defresource]]
             [oyacolab.repository.article :as article]))
 
 (defn- handle-ok [ctx db]
-  (article/find-all-published {} {:connection db}))
+  (->> (article/find-all-published {} {:connection db})
+       (map (fn [a] (update a :published_date #(format/unparse (format/formatter "yyyy/MM/dd") %))))))
 
 (defresource articles [db]
   :allowed-methods [:get]

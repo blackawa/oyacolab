@@ -1,6 +1,7 @@
 (ns oyacolab.resource.admin.article
   (:require [clj-time.core :as time]
             [clj-time.jdbc]
+            [clj-time.format :as format]
             [clojure.tools.logging :as log]
             [liberator.core :refer [defresource]]
             [liberator.representation :refer [ring-response]]
@@ -55,7 +56,8 @@
         article (first (article/find-by-id {:id (read-string id)} {:connection db}))]
     (-> article
         (assoc :save-type (save-type (:article_status_id article)))
-        (dissoc :article_status_id))))
+        (dissoc :article_status_id)
+        (update :published_date #(format/unparse (format/formatter "yyyy/MM/dd") %)))))
 
 (defn- article-status-id [save-type]
   (condp = save-type
@@ -72,6 +74,7 @@
         (assoc :article_status_id article-status-id)
         (dissoc :save-type)
         (assoc :editor_id editor-id)
+        (assoc :published_date (when (= :published (:save-type data)) (time/now)))
         (article/update-article! {:connection db}))))
 
 (defresource article [db]

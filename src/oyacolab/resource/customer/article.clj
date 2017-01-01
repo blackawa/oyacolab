@@ -1,5 +1,7 @@
 (ns oyacolab.resource.customer.article
-  (:require [liberator.core :refer [defresource]]
+  (:require [clj-time.jdbc]
+            [clj-time.format :as format]
+            [liberator.core :refer [defresource]]
             [oyacolab.repository.article :as article]))
 
 (defn- malformed? [ctx]
@@ -8,7 +10,9 @@
 
 (defn- handle-ok [ctx db]
   (let [params (::params ctx)]
-    (first (article/find-published-by-id {:id (read-string (:id params))} {:connection db}))))
+    (-> (article/find-published-by-id {:id (read-string (:id params))} {:connection db})
+        first
+        (update :published_date #(format/unparse (format/formatter "yyyy/MM/dd") %)))))
 
 (defresource article [db]
   :allowed-methods [:get]

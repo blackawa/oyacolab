@@ -16,4 +16,5 @@
       (let [article (subscribe [:customer.article])]
         [:article
          [:h3 (:title @article)]
+         [:p (:published_date @article)]
          [:div {:dangerouslySetInnerHTML {:__html (md->html (:content @article))}}]]))}))

@@ -25,6 +25,7 @@
            (map
             (fn [a]
               [:tr
+               {:key (:id a)}
                [:td (:id a)]
                [:td [:a {:href (str "/admin/articles/" (:id a))} (:title a)]]
                [:td (:article_status_id a)]])
