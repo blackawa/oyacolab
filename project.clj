@@ -26,7 +26,8 @@
                  [buddy "1.2.0"]
                  [re-frame "0.9.1"]
                  [secretary "1.2.3"]
-                 [venantius/accountant "0.1.7"]]
+                 [venantius/accountant "0.1.7"]
+                 [markdown-clj "0.9.91"]]
   :plugins [[lein-environ "1.0.3"]
             [lein-cljsbuild "1.1.2"]]
   :main ^:skip-aot oyacolab.main

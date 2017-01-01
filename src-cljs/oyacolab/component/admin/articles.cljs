@@ -2,6 +2,7 @@
   (:require [goog.string :as string]
             [reagent.core :as reagent]
             [re-frame.core :refer [dispatch subscribe]]
+            [markdown.core :refer [md->html]]
             [oyacolab.endpoint.article :as article]
             [oyacolab.endpoint.auth-token :as auth-token]))
 
@@ -41,8 +42,6 @@
             error (subscribe [:admin.articles.new.error])]
         [:div
          [:h3 "new article"]
-         [:p (str "debug. route: " @(subscribe [:route]))]
-         [:p (str "debug. form: " @form)]
          [:p.error @error]
          [:form
           [:p.title
@@ -62,11 +61,11 @@
                        :on-change #(dispatch [:admin.articles.new.content (-> % .-target .-value)])}]]
           [:div.content-preview
            [:label "content-preview"]
-           [:p (:content @form)]]
+           [:div {:dangerouslySetInnerHTML {:__html (md->html (:content @form))}}]]
           [:p.save-type
            [:label {:for "save-type"} "save-type"]
            [:select
-            {;; user (or) to suppress error to use nil for value of <select>
+            {;; use (or) to suppress error to use nil for value of <select>
              :value (or (:save-type @form) "")
              :on-change #(dispatch [:admin.articles.new.save-type (keyword (-> % .-target .-value))])}
             [:option {:value :draft} "draft"]
