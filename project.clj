@@ -24,6 +24,9 @@
                  [clj-time "0.13.0"]
                  [hiccup "1.0.5"]
                  [buddy "1.2.0"]
+                 [amazonica "0.3.80"]
+                 ;; necessary to work amazonica fine
+                 [com.fasterxml.jackson.core/jackson-databind "2.6.6"]
                  [re-frame "0.9.1"]
                  [secretary "1.2.3"]
                  [venantius/accountant "0.1.7"]
@@ -63,7 +66,6 @@
                                   [org.clojure/tools.nrepl "0.2.12"]
                                   [eftest "0.1.1"]
                                   [com.gearswithingears/shrubbery "0.4.1"]
-                                  [kerodon "0.8.0"]
                                   [binaryage/devtools "0.8.2"]
                                   [com.cemerick/piggieback "0.2.1"]
                                   [duct/figwheel-component "0.3.3"]

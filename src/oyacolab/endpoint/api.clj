@@ -6,7 +6,8 @@
             [oyacolab.resource.admin.auth-token :refer [auth-token]]
             [oyacolab.resource.admin.articles :as admin-articles]
             [oyacolab.resource.admin.article :as admin-article]
-            [oyacolab.resource.admin.authentication :refer [authentication]]))
+            [oyacolab.resource.admin.authentication :refer [authentication]]
+            [oyacolab.resource.admin.file :as file]))
 
 (defn endpoint [{{db :spec} :db}]
   (context "/api" _
@@ -16,4 +17,5 @@
            (ANY "/admin/auth-token" _ (auth-token db))
            (ANY "/admin/authentication" _ (authentication db))
            (ANY "/admin/articles" _ (admin-articles/articles db))
-           (ANY "/admin/articles/:id" _ (admin-article/article db))))
+           (ANY "/admin/articles/:id" _ (admin-article/article db))
+           (ANY "/admin/file" _ (file/file db))))
