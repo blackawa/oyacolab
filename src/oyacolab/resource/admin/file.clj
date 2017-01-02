@@ -24,6 +24,8 @@
         (-> ctx (get-in [:request :multipart-params "file"]))]
     (println "filename:" filename ", content-type:" content-type ", tempfile:" tempfile ", size:" size)
     (println "saving file")
+    {::token {:file-path "" :file-name}}
+    ;; TODO: upload to s3 when client side finished
     ;; (io/copy tempfile (io/file (format "./%s" filename)))
     ))
 
