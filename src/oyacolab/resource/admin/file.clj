@@ -3,7 +3,9 @@
             [clj-time.jdbc]
             [clojure.java.io :as io]
             [liberator.core :refer [defresource]]
-            [oyacolab.repository.auth-token :as token]))
+            [liberator.representation :refer [ring-response]]
+            [oyacolab.repository.auth-token :as token]
+            [oyacolab.repository.file-storage :as file-storage]))
 
 (defn- malformed? [ctx]
   (let [authorization (-> ctx (get-in [:request :headers]) (get "authorization"))]
@@ -19,15 +21,25 @@
   (let [auth-token (first (token/find-by-token {:token (::data ctx)} {:connection db}))]
     (time/before? (time/now) (:expire auth-token))))
 
+(defn- generate-unique-filename [content-type]
+  (let [file-name (str (java.util.UUID/randomUUID))
+        extension (condp #(clojure.string/includes? %2 %1) content-type
+                    "png" ".png"
+                    "jpg" ".jpg"
+                    "")]
+    (str file-name extension)))
+
 (defn- post! [ctx db]
-  (let [{:keys [filename content-type tempfile size]}
-        (-> ctx (get-in [:request :multipart-params "file"]))]
-    (println "filename:" filename ", content-type:" content-type ", tempfile:" tempfile ", size:" size)
-    (println "saving file")
-    {::token {:file-path "" :file-name}}
-    ;; TODO: upload to s3 when client side finished
-    ;; (io/copy tempfile (io/file (format "./%s" filename)))
-    ))
+  (let [{:keys [filename content-type tempfile size]} (-> ctx (get-in [:request :multipart-params "file"]))
+        upload-filename (generate-unique-filename content-type)]
+    ;; program for debug: (io/copy tempfile (io/file (format "./target/%s" upload-filename)))
+    (file-storage/save upload-filename tempfile)
+    {::file-info {:file-path (str "https://s3.amazonaws.com/oyacolab/" upload-filename)
+                  :file-name filename}}))
+
+(defn- handle-created [ctx]
+  (let [file-info (::file-info ctx)]
+    (ring-response {:body (str {:file-info file-info})})))
 
 (defresource file [db]
   :allowed-methods [:post]
@@ -35,4 +47,5 @@
   :malformed? malformed?
   :handle-malformed handle-malformed
   :authorized? #(authorized? % db)
-  :post! #(post! % db))
+  :post! #(post! % db)
+  :handle-created handle-created)

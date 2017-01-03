@@ -105,3 +105,13 @@
  :customer.articles
  (fn [db [_ articles]]
    (assoc db :data articles)))
+
+(reg-event-db
+ :admin.file.upload
+ (fn [db [_ file-info]]
+   (update-in db [:form :content] #(str % "\n" file-info))))
+
+(reg-event-db
+ :admin.file.upload.error
+ (fn [db [_ error]]
+   (assoc db [:error] error)))

@@ -3,7 +3,7 @@
             [amazonica.aws.s3 :refer :all]
             [environ.core :refer [env]]))
 
-(defn upload-file [k file]
+(defn save [k file]
   (put-object
    :bucket-name "oyacolab"
    :key k

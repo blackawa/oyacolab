@@ -4,7 +4,8 @@
             [re-frame.core :refer [dispatch subscribe]]
             [markdown.core :refer [md->html]]
             [oyacolab.endpoint.admin.article :as article]
-            [oyacolab.endpoint.admin.auth-token :as auth-token]))
+            [oyacolab.endpoint.admin.auth-token :as auth-token]
+            [oyacolab.endpoint.admin.file :as file]))
 
 (defn articles []
   (reagent/create-class
@@ -60,6 +61,11 @@
                        :placeholder "content"
                        :value (:content @form)
                        :on-change #(dispatch [:admin.articles.new.content (-> % .-target .-value)])}]]
+          [:p
+           [:label {:for "image"} "image"]
+           [:input {:type "file"
+                    :id "image"
+                    :on-change #(file/upload (-> % .-target .-files (aget 0)))}]]
           [:div.content-preview
            [:label "content-preview"]
            [:div {:dangerouslySetInnerHTML {:__html (md->html (:content @form))}}]]
