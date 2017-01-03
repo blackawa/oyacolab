@@ -109,7 +109,7 @@
 (reg-event-db
  :admin.file.upload
  (fn [db [_ file-info]]
-   (update-in db [:form :content] #(str % "\n" file-info))))
+   (update-in db [:form :content] #(str % "\n\n" file-info))))
 
 (reg-event-db
  :admin.file.upload.error

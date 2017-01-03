@@ -110,6 +110,11 @@
                        :placeholder "content"
                        :value (:content @form)
                        :on-change #(dispatch [:admin.articles.new.content (-> % .-target .-value)])}]]
+          [:p
+           [:label {:for "image"} "image"]
+           [:input {:type "file"
+                    :id "image"
+                    :on-change #(file/upload (-> % .-target .-files (aget 0)))}]]
           [:div.content-preview
            [:label "content-preview"]
            [:div {:dangerouslySetInnerHTML {:__html (md->html (:content @form))}}]]
@@ -120,5 +125,6 @@
              :value (or (:save-type @form) "")
              :on-change #(dispatch [:admin.articles.new.save-type (keyword (-> % .-target .-value))])}
             [:option {:value :draft} "draft"]
-            [:option {:value :published} "published"]]]
+            [:option {:value :published} "published"]
+            [:option {:value :withdrawn} "withdrawn"]]]
           [:p [:button {:on-click #(do (.preventDefault %) (article/put @form))} "save"]]]]))}))
