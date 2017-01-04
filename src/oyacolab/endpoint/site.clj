@@ -6,6 +6,8 @@
   (html5
    [:head
     [:meta {:charset "utf-8"}]
+    [:link {:rel "stylesheet" :href "/assets/normalize.css/normalize.css"}]
+    [:link {:rel "stylesheet" :href "/assets/pure/pure-min.css"}]
     [:title "親子で開発日記 | oya-co-lab"]]
    [:body
     [:div {:id "app"}
@@ -16,4 +18,8 @@
 (defn endpoint [{{db :spec} :db}]
   (routes
    (GET "/" [] (index))
-   (GET "/:id" [id] (index))))
+   (GET "/articles/:id" [] (index))
+   (GET "/admin/login" [] (index))
+   (GET "/admin/articles" [] (index))
+   (GET "/admin/articles/new" [] (index))
+   (GET "/admin/articles/:id" [] (index))))
