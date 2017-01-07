@@ -7,10 +7,6 @@
     :applied   ^:replace [:not-found :webjars :ring-defaults :stacktrace]}}
   :http
   {:port 3000}
-  :db
-  {:uri "jdbc:postgresql://localhost/oyacolab"
-   :username "oyacolab"
-   :password "p@ssw0rd"}
   :figwheel
   {:css-dirs ["resources/oyacolab/public/css"]
    :builds

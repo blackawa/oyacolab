@@ -9,11 +9,8 @@
               [hanami.core :as hanami]))
 
 (defn -main [& args]
-  (let [bindings {'http-port (Integer/parseInt (:port env "3000"))
-                  'db-uri    (hanami/jdbc-uri (:database-url env))}
+  (let [bindings {'http-port (Integer/parseInt (:port env "3000"))}
         system   (->> (load-system [(io/resource "oyacolab/system.edn")] bindings)
                       (component/start))]
-    (println "migrating")
-    (migrate (:ragtime system))
     (add-shutdown-hook ::stop-system #(component/stop system))
     (println "Started HTTP server on port" (-> system :http :port))))

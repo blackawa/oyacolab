@@ -51,7 +51,7 @@
             "deploy" ["do"
                       ["vcs" "assert-committed"]
                       ["vcs" "push" "heroku" "master"]]}
-  :repl-options {:port 51979}
+  :repl-options {:port 51987}
   :profiles
   {:dev  [:project/dev  :profiles/dev]
    :test [:project/test :profiles/test]
