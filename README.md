@@ -1,6 +1,6 @@
 # oyacolab
 
-media service with clj / cljs
+親子のIT開発日記
 
 ## Developing
 
@@ -14,14 +14,6 @@ lein setup
 
 This will create files for local configuration, and prep your system
 for the project.
-
-Next connect the repository to the [Heroku][] app:
-
-```sh
-heroku git:remote -a FIXME
-```
-
-[heroku]: https://www.heroku.com/
 
 ### Environment
 
@@ -38,6 +30,18 @@ user=> (dev)
 :loaded
 ```
 
+Before you start application, boot [micropress](https://github.com/blackawa/micropress) docker container.
+
+```sh
+docker-compose -f docker-compose.dev.yml up -d
+```
+
+and add `/etc/hosts`:
+
+```
+127.0.0.1       localhost oyaco-lab.com api.oyaco-lab.com admin.oyaco-lab.com
+```
+
 Run `go` to initiate and start the system.
 
 ```clojure
@@ -45,7 +49,7 @@ dev=> (go)
 :started
 ```
 
-By default this creates a web server at <http://localhost:3000>.
+This creates a web server at <http://localhost:3000>.
 
 When you make changes to your source files, use `reset` to reload any
 modified files and reset the server. Changes to CSS or ClojureScript

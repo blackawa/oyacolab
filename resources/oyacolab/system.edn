@@ -1,16 +1,11 @@
 {:components
  {:app  #var duct.component.handler/handler-component
-  :http #var ring.component.jetty/jetty-server
-  :db   #var duct.component.hikaricp/hikaricp
-  :ragtime #var duct.component.ragtime/ragtime}
+  :http #var ring.component.jetty/jetty-server}
  :endpoints
- {:site #var oyacolab.endpoint.site/endpoint
-  :api #var oyacolab.endpoint.api/endpoint}
+ {:site #var oyacolab.endpoint.site/endpoint}
  :dependencies
  {:http [:app]
-  :app  [:site :api]
-  :ragtime [:db]
-  :api [:db]}
+  :app  [:site]}
  :config
  {:app
   {:middleware
@@ -42,8 +37,4 @@
                   :content-types          true
                   :default-charset        "utf-8"}}}}}
   :http
-  {:port http-port}
-  :db
-  {:uri db-uri}
-  :ragtime
-  {:resource-path "oyacolab/migrations"}}}
+  {:port http-port}}}
