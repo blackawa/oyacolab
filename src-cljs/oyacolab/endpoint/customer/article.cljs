@@ -5,8 +5,7 @@
 
 (defn fetch-all []
   (request
-   ;; (str (.. js/location -procotol) "//" (.. js/location -host) "/api/articles")
-   (str (.. js/location -procotol) "//localhost:3001/api/articles")
+   (str (.. js/location -procotol) "//api.oyaco-lab.com/api/articles")
    :get
    (fn [xhrio]
      (let [res (read-string (.getResponseText xhrio))]
@@ -14,7 +13,7 @@
    :headers {"Content-Type" "application/edn"}))
 
 (defn fetch-by-id [id]
-  (request (str (.. js/location -procotol) "//" (.. js/location -host) "/api/articles/" id)
+  (request (str (.. js/location -procotol) "//api.oyaco-lab.com/api/articles/" id)
            :get
            (fn [xhrio]
              (let [res (read-string (.getResponseText xhrio))]

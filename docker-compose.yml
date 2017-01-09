@@ -1,0 +1,31 @@
+db:
+  image: postgres
+  environment:
+    POSTGRES_PASSWORD: "p@ssw0rd"
+    POSTGRES_USER: "micropress"
+    POSTGRES_DB: "micropress"
+
+backend:
+  image: micropress:0.1
+  links:
+    - db
+  environment:
+    DATABASE_URL: "jdbc:postgresql://db:5432/micropress"
+    USERNAME: "micropress"
+    PASSWORD: "p@ssw0rd"
+    ACCESS_CONTROL_ALLOW_ORIGIN: "http://oyaco-lab.com"
+
+frontend:
+  build: .
+  links:
+    - backend
+
+web-server:
+  image: nginx:1.11
+  links:
+    - backend
+    - frontend
+  volumes:
+    - ./docker/default.conf:/etc/nginx/conf.d/default.conf
+  ports:
+    - "80:80"
