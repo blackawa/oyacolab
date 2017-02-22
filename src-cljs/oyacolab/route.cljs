@@ -30,7 +30,7 @@
       (fn []
         [:div.wrap
          [:header
-          [:h2 "親子開発日記 | oya-co-lab"]]
+          [:h2 "おやこらぼ"]]
          [:section
           [current-view @route]]]))}))
 (defmulti current-base-view #(first %))
