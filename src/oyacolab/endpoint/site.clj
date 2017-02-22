@@ -8,7 +8,7 @@
     [:meta {:charset "utf-8"}]
     [:link {:rel "stylesheet" :href "/assets/normalize.css/normalize.css"}]
     [:link {:rel "stylesheet" :href "/assets/pure/pure-min.css"}]
-    [:title "親子で開発日記 | oya-co-lab"]]
+    [:title "おやこらぼ"]]
    [:body
     [:div {:id "app"}
      [:h2 "Loading..."]]

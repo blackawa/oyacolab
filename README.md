@@ -1,6 +1,6 @@
 # oyacolab
 
-親子のIT開発日記
+親子のIT開発の日記サービス.
 
 ## Developing
 
@@ -160,7 +160,8 @@ nil
 To deploy the project, run:
 
 ```sh
-lein deploy
+lein do clean, uberjar
+docker build -t oyacolab:<version> .
 ```
 
 ## Legal
